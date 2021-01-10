@@ -11,12 +11,12 @@ creds = Credentials.from_service_account_file(sa_file, scopes=[
 ])
 
 
-@fixture(scope='module')
+@fixture
 def gsheet_client():
     return build('sheets', 'v4', credentials=creds)
 
 
-@fixture(scope='module')
+@fixture
 def temp_gsheet(gsheet_client):
     spreadsheet = gsheet_client.spreadsheets().create().execute()
     sid = spreadsheet['spreadsheetId']
