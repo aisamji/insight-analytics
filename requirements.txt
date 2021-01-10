@@ -1,1 +1,2 @@
 mailchimp3==3.0.14
+google-api-python-client==1.12.8
