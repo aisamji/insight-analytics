@@ -1,7 +1,7 @@
 import main as app
 import mockchimp3
 import mock_sheet
-app.mailchimp3 = mockchimp3
+app.MailChimp = mockchimp3.MailChimp
 app.build = mock_sheet.build
 
 mock_spreadsheet = mock_sheet.GSheetValues()

@@ -13,7 +13,7 @@ class MailChimp:
 
 
 class SearchCampaigns:
-    def get(self, *, query):
+    def get(self, *, query, fields=None):
         matches = filter(lambda x: query in x['campaign']['title'], _campaigns)
         return {'results': list(matches)}
 
@@ -23,12 +23,12 @@ class Reports:
     def click_details(self):
         return ReportClickDetails()
 
-    def get(self, *, campaign_id):
+    def get(self, *, campaign_id, fields=None):
         return _reports
 
 
 class ReportClickDetails:
-    def all(self, *, campaign_id):
+    def all(self, *, campaign_id, fields=None):
         return _click_details
 
 

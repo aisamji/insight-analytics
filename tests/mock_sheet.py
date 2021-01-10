@@ -14,8 +14,8 @@ class GSheetSpreadsheets:
 
 class GSheetValues:
     _sheets = {
-        'master': [40 * [''] for i in range(40)],
-        'test1': [40 * [''] for i in range(40)],
+        'master': [13 * [''] for i in range(40)],
+        'test1': [13 * [''] for i in range(40)],
     }
 
     def batchGet(self, *, spreadsheetId, ranges, majorDimension='ROWS'):
@@ -25,8 +25,8 @@ class GSheetValues:
             for r in ranges:
                 sheet_name, cell_range = r.split('!')
                 start, end = cell_range.split(':')
-                start_col, start_row = ord(start[0])-65, int(start[1])-1
-                end_col, end_row = ord(end[0])-65, int(end[1])-1
+                start_col, start_row = ord(start[0])-65, int(start[1:])-1
+                end_col, end_row = ord(end[0])-65, int(end[1:])-1
 
                 target_sheet = self._sheets[sheet_name.lower()]
                 results = []
@@ -55,8 +55,8 @@ class GSheetValues:
 
                 sheet_name, cell_range = range_.split('!')
                 start, end = cell_range.split(':')
-                start_col, start_row = ord(start[0])-65, int(start[1])-1
-                end_col, end_row = ord(end[0])-65, int(end[1])-1
+                start_col, start_row = ord(start[0])-65, int(start[1:])-1
+                end_col, end_row = ord(end[0])-65, int(end[1:])-1
 
                 results = []
                 for i in range(start_row, end_row+1):
@@ -70,7 +70,12 @@ class GSheetValues:
                 for i in range(len(results)):
                     for j in range(width):
                         x, y = results[i][j]
-                        target_sheet[x][y] = values[i][j]
+                        try:
+                            target_sheet[x][y] = values[i][j]
+                        except IndexError:
+                            break
+                    if i >= len(values):
+                        break
         return Request(func)
 
     def append(self, *, spreadsheetId, range, body, valueInputOption=None):
@@ -78,8 +83,8 @@ class GSheetValues:
             values = body['values']
             sheet_name, cell_range = range.split('!')
             start, end = cell_range.split(':')
-            start_col, start_row = ord(start[0])-65, int(start[1])-1
-            end_col, end_row = ord(end[0])-65, int(end[1])-1
+            start_col, start_row = ord(start[0])-65, int(start[1:])-1
+            end_col, end_row = ord(end[0])-65, int(end[1:])-1
 
             target_sheet = self._sheets[sheet_name.lower()]
             insertion_row = None
