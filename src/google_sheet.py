@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from googleapiclient.discovery import build
 from google.oauth2.service_account import Credentials
 from utils import logger
+import timezones
 
 
 # This will not be required when the script is moved onto GCP.
@@ -113,7 +114,7 @@ class CellUpdateRequestBatch:
 
     def set_overview(self, details):
         values = [(
-            datetime.now().strftime(DATETIME_FORMAT),
+            datetime.now(tz=timezones.CENTRAL).strftime(DATETIME_FORMAT),
             details['open_rate'],
             details['click_rate']
         )]
