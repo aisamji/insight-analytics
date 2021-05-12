@@ -1,18 +1,20 @@
-import os
+import json
 from datetime import datetime, timedelta
 from googleapiclient.discovery import build
 from google.oauth2.service_account import Credentials
+import boto3
 from utils import logger
 import timezones
 
 
-# This will not be required when the script is moved onto GCP.
-SERVICE_ACCOUNT_FILE = os.path.join(os.path.dirname(__file__), '../google-credentials.json')
+SSM_CLIENT = boto3.client('ssm')
+GOOGLE_SA_JSON = SSM_CLIENT.get_parameter(Name='/insight-analytics/service-account-info', WithDecryption=True)
+GOOGLE_SA_INFO = json.loads(GOOGLE_SA_JSON['Parameter']['Value'])
 SCOPES = [
     'https://www.googleapis.com/auth/spreadsheets',
     'https://www.googleapis.com/auth/drive',
 ]
-GOOGLE_CREDS = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+GOOGLE_CREDS = Credentials.from_service_account_info(GOOGLE_SA_INFO, scopes=SCOPES)
 
 SHEETS_CLIENT = build('sheets', 'v4', credentials=GOOGLE_CREDS)
 DRIVE_CLIENT = build('drive', 'v3', credentials=GOOGLE_CREDS)

@@ -1,3 +1,4 @@
 mailchimp3==3.0.14
 google-api-python-client==1.12.8
 requests==2.25.1
+boto3==1.17.71
