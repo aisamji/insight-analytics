@@ -4,7 +4,6 @@ COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
 COPY src app
-COPY google-credentials.json google-credentials.json
 
 WORKDIR app
 ENTRYPOINT ["python", "main.py"]
