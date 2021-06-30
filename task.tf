@@ -1,7 +1,3 @@
-provider "aws" {
-  region = "us-east-2"
-}
-
 module "ecs_execution_role" {
   source  = "aisamji/ecs-execution-role/aws"
   version = "1.0.0"
