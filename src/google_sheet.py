@@ -28,6 +28,9 @@ CHART_DATA_SOURCE = 'Master!I11:I16'
 OVERVIEW_RANGE_FORMAT = '{}!B1:B3'
 URLS_RANGE_FORMAT = '{}!C6:E116'
 
+MAILCHIMP_API_SECRET = SSM_CLIENT.get_parameter(Name='/insight-analytics/mailchimp-api-key', WithDecryption=True)
+MAILCHIMP_API_KEY = MAILCHIMP_API_SECRET['Parameter']['Value']
+
 
 def get_or_create_spreadsheet(spreadsheet_name):
     try:

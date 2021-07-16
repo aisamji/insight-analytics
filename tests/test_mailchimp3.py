@@ -1,7 +1,7 @@
 from pytest import param, mark, fixture
 from mailchimp3 import MailChimp
 
-client = MailChimp(mc_api='45ef254b0660a24cf859d541e5d1ddd4-us16')
+client = MailChimp(mc_api='0123456789abcdef0123456789abcdef-us16')
 
 
 @fixture(scope='module')

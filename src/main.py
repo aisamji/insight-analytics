@@ -6,7 +6,7 @@ import json
 import requests
 from mailchimp3 import MailChimp
 from utils import with_backoff, with_backoff_condition, logger
-from google_sheet import get_or_create_spreadsheet, CellUpdateRequestBatch
+from google_sheet import get_or_create_spreadsheet, CellUpdateRequestBatch, MAILCHIMP_API_KEY
 
 GSHEET_TEMPLATE_ID = '1EoVKoOKPnnykMBK1bumvDWODp7mW9aAtdhE4B2qTgYY'
 
@@ -123,7 +123,7 @@ def get_batch(batch_id):
 def mailchimp_client():
     global mc_client
     if mc_client is None:
-        mc_client = MailChimp(mc_api='45ef254b0660a24cf859d541e5d1ddd4-us16')
+        mc_client = MailChimp(mc_api=MAILCHIMP_API_KEY)
     return mc_client
 
 
