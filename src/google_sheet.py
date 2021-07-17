@@ -7,7 +7,7 @@ from utils import logger
 import timezones
 
 
-SSM_CLIENT = boto3.client('ssm')
+SSM_CLIENT = boto3.client('ssm', region_name='us-east-2')
 GOOGLE_SA_JSON = SSM_CLIENT.get_parameter(Name='/insight-analytics/service-account-info', WithDecryption=True)
 GOOGLE_SA_INFO = json.loads(GOOGLE_SA_JSON['Parameter']['Value'])
 SCOPES = [
