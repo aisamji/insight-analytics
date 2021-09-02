@@ -36,5 +36,5 @@ jobs:
       - run: |
           aws s3 cp $TF_BACKEND_LOCATION infra.state
           REPO_URL=$(jq -r '.outputs.ecr_repo_url.value' infra.state)
-          docker build -t $REPO_URL:$latest .
+          docker build -t $REPO_URL:latest .
           docker push $REPO_URL:latest
