@@ -1,0 +1,40 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  TERRAFORM_VERSION: 1.0.1
+  TF_BACKEND_LOCATION: s3://alisamji-cloud-infra/terraform/global.tfstate
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_REGION: us-east-2
+  AWS_DEFAULT_REGION: us-east-2
+
+jobs:
+  infrastructure:
+    name: Apply Terraform
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+      - run: terraform init
+      - run: terraform apply --auto-approve -no-color
+  image:
+    name: Publish Application Image
+    needs: infrastructure
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: aws-actions/amazon-ecr-login@v1
+      - run: |
+          aws s3 cp $TF_BACKEND_LOCATION infra.state
+          REPO_URL=$(jq -r '.outputs.ecr_repo_url.value' infra.state)
+          docker build -t $REPO_URL:$latest .
+          docker push $REPO_URL:latest
