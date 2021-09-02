@@ -1,8 +1,11 @@
-module "ecs_execution_role" {
-  source  = "aisamji/ecs-execution-role/aws"
-  version = "1.0.0"
+data "terraform_remote_state" "global" {
+  backend = "s3"
+  config = {
+    bucket = "alisamji-cloud-infra"
+    key    = "terraform/global.tfstate"
+    region = "us-east-2"
+  }
 }
-
 
 module "fargate_scheduled_task" {
   source  = "aisamji/fargate-scheduled-task/aws"
@@ -11,7 +14,7 @@ module "fargate_scheduled_task" {
   cpu    = 1024
   memory = 2048
 
-  ecs_role_arn = module.ecs_execution_role.ecs_role_arn
+  ecs_role_arn = data.terraform_remote_state.global.outputs.ecs_execution_role_arn
 
   cluster_arn            = var.cluster_arn
   cron                   = "0 19 ? * SUN *"
